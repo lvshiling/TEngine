@@ -13,13 +13,6 @@
       "source": "embedded",
       "dependencies": {}
     },
-    "com.kyrylokuzyk.primetween": {
-      "version": "1.3.1",
-      "depth": 0,
-      "source": "registry",
-      "dependencies": {},
-      "url": "https://registry.npmjs.org"
-    },
     "com.tuyoogame.yooasset": {
       "version": "file:YooAsset",
       "depth": 0,
