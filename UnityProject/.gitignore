@@ -83,7 +83,7 @@ Bundles/
 #Sandbox
 Sandbox/
 
-package/
+#package/
 #MAC
 .DS_Store
 
@@ -95,7 +95,7 @@ package/
 # [Aa]ssets/Plugins/Sirenix.meta
 
 #YooAssets
-package/
+#package/
 yoo/
 [Aa]ssets/TEngine/AssetSetting/Resources/BuiltinFileManifest.asset
 [Aa]ssets/TEngine/AssetSetting/Resources/BuiltinFileManifest.asset.meta
