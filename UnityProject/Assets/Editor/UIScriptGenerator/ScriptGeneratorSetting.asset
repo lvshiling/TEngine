@@ -80,3 +80,6 @@ MonoBehaviour:
   - uiElementRegex: m_tmp
     componentName: TextMeshProUGUI
     isUIWidget: 0
+  - uiElementRegex: m_list
+    componentName: LoopListHelper
+    isUIWidget: 0
