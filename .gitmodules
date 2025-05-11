@@ -1,1 +1,4 @@
 
+[submodule "luban"]
+	path = luban
+	url = https://github.com/focus-creative-games/luban.git
