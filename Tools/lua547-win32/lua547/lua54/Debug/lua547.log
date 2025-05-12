@@ -1,0 +1,77 @@
+﻿  lapi.c
+  lauxlib.c
+  lbaselib.c
+  lcode.c
+  lcorolib.c
+  lctype.c
+  ldblib.c
+  ldebug.c
+  ldo.c
+  ldump.c
+  lfunc.c
+  lgc.c
+  linit.c
+  liolib.c
+  llex.c
+  lmathlib.c
+  lmem.c
+  loadlib.c
+  lobject.c
+  lopcodes.c
+  正在生成代码...
+  正在编译...
+  loslib.c
+  lparser.c
+  lstate.c
+  lstring.c
+  lstrlib.c
+  ltable.c
+  ltablib.c
+  ltm.c
+  lua.c
+  lundump.c
+  lutf8lib.c
+  lvm.c
+  lzio.c
+  正在生成代码...
+    正在创建库 C:\workplace\projects\lua547-win64\lua547\Debug\lua54.lib 和对象 C:\workplace\projects\lua547-win64\lua547\Debug\lua54.exp
+LINK : warning LNK4217: 符号“_lua_close”(在“ lstate.obj”中定义)已由“lua.obj”(函数“_main”中)导入
+LINK : warning LNK4217: 符号“_lua_gettop”(在“ lapi.obj”中定义)已由“lua.obj”(函数“_docall”中)导入
+LINK : warning LNK4217: 符号“_lua_settop”(在“ lapi.obj”中定义)已由“lua.obj”(函数“_addreturn”中)导入
+LINK : warning LNK4217: 符号“_lua_rotate”(在“ lapi.obj”中定义)已由“lua.obj”(函数“_addreturn”中)导入
+LINK : warning LNK4217: 符号“_lua_type”(在“ lapi.obj”中定义)已由“lua.obj”(函数“_msghandler”中)导入
+LINK : warning LNK4217: 符号“_lua_typename”(在“ lapi.obj”中定义)已由“lua.obj”(函数“_msghandler”中)导入
+LINK : warning LNK4217: 符号“_lua_tointegerx”(在“ lapi.obj”中定义)已由“lua.obj”(函数“_pmain”中)导入
+LINK : warning LNK4217: 符号“_lua_toboolean”(在“ lapi.obj”中定义)已由“lua.obj”(函数“_main”中)导入
+LINK : warning LNK4217: 符号“_lua_tolstring”(在“ lapi.obj”中定义)已由“lua.obj”(函数“_addreturn”中)导入
+LINK : warning LNK4217: 符号“_lua_touserdata”(在“ lapi.obj”中定义)已由“lua.obj”(函数“_pmain”中)导入
+LINK : warning LNK4217: 符号“_lua_pushinteger”(在“ lapi.obj”中定义)已由“lua.obj”(函数“_main”中)导入
+LINK : warning LNK4217: 符号“_lua_pushlstring”(在“ lapi.obj”中定义)已由“lua.obj”(函数“_pushline”中)导入
+LINK : warning LNK4217: 符号“_lua_pushstring”(在“ lapi.obj”中定义)已由“lua.obj”(函数“_createargtable”中)导入
+LINK : warning LNK4217: 符号“_lua_pushfstring”(在“ lapi.obj”中定义)已由“lua.obj”(函数“_addreturn”中)导入
+LINK : warning LNK4217: 符号“_lua_pushcclosure”(在“ lapi.obj”中定义)已由“lua.obj”(函数“_docall”中)导入
+LINK : warning LNK4217: 符号“_lua_pushboolean”(在“ lapi.obj”中定义)已由“lua.obj”(函数“_pmain”中)导入
+LINK : warning LNK4217: 符号“_lua_pushlightuserdata”(在“ lapi.obj”中定义)已由“lua.obj”(函数“_main”中)导入
+LINK : warning LNK4217: 符号“_lua_getglobal”(在“ lapi.obj”中定义)已由“lua.obj”(函数“_dolibrary”中)导入
+LINK : warning LNK4217: 符号“_lua_rawgeti”(在“ lapi.obj”中定义)已由“lua.obj”(函数“_pushargs”中)导入
+LINK : warning LNK4217: 符号“_lua_createtable”(在“ lapi.obj”中定义)已由“lua.obj”(函数“_createargtable”中)导入
+LINK : warning LNK4217: 符号“_lua_setglobal”(在“ lapi.obj”中定义)已由“lua.obj”(函数“_createargtable”中)导入
+LINK : warning LNK4217: 符号“_lua_setfield”(在“ lapi.obj”中定义)已由“lua.obj”(函数“_pmain”中)导入
+LINK : warning LNK4217: 符号“_lua_rawseti”(在“ lapi.obj”中定义)已由“lua.obj”(函数“_createargtable”中)导入
+LINK : warning LNK4217: 符号“_lua_pcallk”(在“ lapi.obj”中定义)已由“lua.obj”(函数“_docall”中)导入
+LINK : warning LNK4217: 符号“_lua_warning”(在“ lapi.obj”中定义)已由“lua.obj”(函数“_runargs”中)导入
+LINK : warning LNK4217: 符号“_lua_gc”(在“ lapi.obj”中定义)已由“lua.obj”(函数“_main”中)导入
+LINK : warning LNK4217: 符号“_lua_concat”(在“ lapi.obj”中定义)已由“lua.obj”(函数“_multiline”中)导入
+LINK : warning LNK4217: 符号“_lua_sethook”(在“ ldebug.obj”中定义)已由“lua.obj”(函数“_laction”中)导入
+LINK : warning LNK4217: 符号“_luaL_checkversion_”(在“ lauxlib.obj”中定义)已由“lua.obj”(函数“_pmain”中)导入
+LINK : warning LNK4217: 符号“_luaL_callmeta”(在“ lauxlib.obj”中定义)已由“lua.obj”(函数“_msghandler”中)导入
+LINK : warning LNK4217: 符号“_luaL_tolstring”(在“ lauxlib.obj”中定义)已由“lua.obj”(函数“_get_prompt”中)导入
+LINK : warning LNK4217: 符号“_luaL_checkstack”(在“ lauxlib.obj”中定义)已由“lua.obj”(函数“_l_print”中)导入
+LINK : warning LNK4217: 符号“_luaL_error”(在“ lauxlib.obj”中定义)已由“lua.obj”(函数“_lstop”中)导入
+LINK : warning LNK4217: 符号“_luaL_loadfilex”(在“ lauxlib.obj”中定义)已由“lua.obj”(函数“_dofile”中)导入
+LINK : warning LNK4217: 符号“_luaL_loadbufferx”(在“ lauxlib.obj”中定义)已由“lua.obj”(函数“_addreturn”中)导入
+LINK : warning LNK4217: 符号“_luaL_newstate”(在“ lauxlib.obj”中定义)已由“lua.obj”(函数“_main”中)导入
+LINK : warning LNK4217: 符号“_luaL_len”(在“ lauxlib.obj”中定义)已由“lua.obj”(函数“_pushargs”中)导入
+LINK : warning LNK4217: 符号“_luaL_traceback”(在“ lauxlib.obj”中定义)已由“lua.obj”(函数“_msghandler”中)导入
+LINK : warning LNK4217: 符号“_luaL_openlibs”(在“ linit.obj”中定义)已由“lua.obj”(函数“_pmain”中)导入
+  lua547.vcxproj -> C:\workplace\projects\lua547-win64\lua547\Debug\lua54.exe
