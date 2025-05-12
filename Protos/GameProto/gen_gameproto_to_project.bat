@@ -14,11 +14,11 @@ echo %SPROTODUMP_DLL%
 set LUA_BIN=%WORKSPACE%\Tools\lua547-win32\lua547\Debug\lua54.exe
 echo "LUA_BIN"
 echo %LUA_BIN%
-rem set CONF_ROOT=.
-rem set DATA_OUTPATH=%WORKSPACE%/UnityProject/Assets/AssetRaw/Configs/bytes/
-rem set CODE_OUTPATH=%WORKSPACE%/UnityProject/Assets/GameScripts/HotFix/GameProto/GameConfig/
 
-%LUA_BIN% %SPROTODUMP_DLL% -cs %PROTOS_PATH%\Member.sproto -o Member.cs
+set CODE_OUTPATH=%WORKSPACE%\UnityProject\Assets\GameScripts\HotFix\GameProto\Message\
+echo "CODE_OUTPATH"
+
+%LUA_BIN% %SPROTODUMP_DLL% -cs %PROTOS_PATH%\Member.sproto -o %CODE_OUTPATH%\Member.cs
 
 cd %NOW_PATH%
 pause
