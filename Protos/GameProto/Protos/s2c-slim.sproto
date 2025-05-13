@@ -1,0 +1,581 @@
+.package {
+	type 0 : integer
+	session 1 : integer
+}
+
+heartbeat 1 {
+}
+
+.prop { # 道具
+    id 0 : integer
+    quantity 1 : integer
+	add_time 2 : integer
+}
+
+.battery_skill {
+    id 0 : integer         # 炮台id
+    time 1 : integer       # 剩余时间 
+    factor 2 : integer     # 初始倍率
+}
+
+table_player_sit_down 3 {
+	request {
+		uid 0 : string
+		chair_id 1 : integer
+        gold 2 : string
+        level 3 : integer
+        gender 4 : integer
+        nickname 5 : string
+        img_url 6 : string
+        diamond 7 : integer
+        unlock_battery 8 : integer # 当前已经解锁了的最高的炮倍数
+        using_cannon   9 : integer #正在使用的炮，是物品表的id
+        using_cannon_multiple 10 : integer # 当前使用的炮倍
+        is_bankruptcy 11 : boolean # 是否破产
+        vip_level 12 : integer # 玩家的VIP等级
+        items 13 : *prop  # 玩家道具数量，用于魂石房间魂石数量显示
+        account_id 14: integer # 玩家账号ID
+        score 15: integer #玩家分数(比赛场)
+        icon_box_id 16 : integer #头像框id
+        current_money_border_id 17 : integer # 玩家货币框        
+        battery_skill 20 : battery_skill   # 炮技能信息
+	}
+}
+
+table_player_stand_up 4 {
+	request {
+		uid 0 : string
+		chair_id 1 : integer
+	}
+}
+
+.reach_cond {
+    id 0 : integer
+    num 1 : integer
+}
+
+.task_info {
+    id 0 : integer
+    status 1 : integer
+	cond_list 2 : *reach_cond
+}
+
+push_changed_task 5 {
+    request {
+        list            0 : *task_info
+        # 新增字段，没有这个字段或字段值为1表示更新数量，状态
+        # 值为2表示新增
+        event_id        1 : integer
+    }
+}
+
+.fish {
+	id 0 : integer
+    tag_id 1 : integer
+    path 2 : *integer
+    time 3 : integer
+    change_id 4 : integer
+    func_ids 5 : *integer
+    func_params 6 : *integer
+    pos 7 : integer             # 位置编号，鱼阵才会用到
+    protect_tag 8 : integer     # 护卫的鱼的tag_id
+    forzen_t 9 : integer        # 冰冻时间结束时间
+    expiration_t 10 : integer   # 鱼到期时间，存在这个值则该鱼的路径只跑一次，不会进行循环
+    score 11 : integer          # 鱼的分数
+    charm_t 12 : integer        # 魅惑到期时间
+}
+
+.victim {
+    id 0 : integer
+    tag_id 1 : integer
+    score 2 : integer
+    items 3 : *prop                 # 掉落道具
+    func_id 4 : integer             # 特殊鱼死亡后触发的特殊网的功能id，需要判空
+    net_id 5 : integer              # 特殊鱼死亡后触发的特殊网的网id，需要判空
+    factor_list 6 : *integer        # 特殊的大鱼死亡之后触发的翻倍显示序列
+    slots_score 7 : integer         # 拉霸机积分
+    crit_gold 8 : integer           # 暴击金币
+    must_show_num 9 : integer       # 掉落宝箱必定展示道具个数, 用于同步给其他玩家
+    special_fish_status 10 : integer # 特殊鱼死亡状态
+}
+table_fire 7 { # 发炮
+    request {
+        uid 0           : string # uid
+        rot 1           : string # 转动角度
+    }
+}
+
+table_fish_net 8 { # 网
+	request {
+        uid 1 : string         # uid
+        fishes 2 : *victim     # 死掉的鱼
+        factor 3 : integer     # 翻倍
+        silo_award 4 : integer # 炮的增益(要除以10，保留一位小数)
+        total_gold 5 : string  # 玩家总金币
+        total_exp 6 : integer  # 玩家经验
+        func_id 7 : integer    # 特殊网使用的功能id
+        net_id 8 : integer     # 特殊网使用的网id
+        total_diamond 9 : integer  # 玩家总钻石
+        special_fish_left_gold 10 : integer  # 特殊鱼最后剩余的保底分
+    }
+}
+
+kick_user 9 { # 玩家将被踢下线
+    request {
+        reason 0 : integer # 被踢原因(const.kick_user_reason)
+    }
+}
+
+login_queue_wait 11 { # 登陆排队等待
+    request {
+        wait_time 0 : integer # 需要等待的时长(秒)
+    }
+}
+
+user_level_up 13 { # 用户升级
+    request {
+        level 0 : integer # 等级
+        rewards 1 : *prop # 升级奖励
+        total_diamond 2 : integer
+        total_gold 3 : string
+    }
+}
+
+.mail {
+    id 0 : integer # 邮件id (邮件奖励配置.xls 里的id或网站后台自定义id>10000)
+    guid 1 : string # 邮件唯一标识
+    type 2 : integer # 邮件类型(const.mail_type)
+    title 3 : string # 标题
+    content 4 : string # 内容
+    reward 5 : *prop # 邮件里的奖励
+    create_time 6 : integer # 创建时间 
+    state 7 : integer # 邮件状态（const.mail_state)
+    expire_time 8 : integer # 邮件过期时间
+    from_account_id 9 : integer # 邮件来自的用户account_id，好友邮件使用
+    jump_text 10 : string # 跳转按钮文字
+    jump_url 11 : string # 跳转链接
+    content_id 12 : integer # 邮件内容id，好友邮件使用
+    from_vip 13 : integer #  邮件来自的用户vip等级，好友邮件使用
+    from_nickname 14 : string # 邮件来自的用户昵称，好友邮件使用
+}
+
+mail_list 18 {
+    request {
+        mails 0 : *mail # 邮件列表
+        is_end 1 : boolean # 是否发送完
+    }
+}
+
+.fire_event {
+    rot 0 : string # 转动角度
+    bullet_id 1 : integer # id
+    lock_fish_id 2  : integer # 被锁定的鱼的id（唯一的）
+}
+.fish_net_event {
+    uid 1 : string         # uid
+    fishes 2 : *victim     # 死掉的鱼
+    factor 3 : integer     # 翻倍
+    silo_award 4 : integer # 炮的增益(要除以10，保留一位小数)
+    total_gold 5 : string  # 玩家总金币
+    total_exp 6 : integer  # 玩家经验
+    func_id 7 : integer    # 特殊网使用的功能id
+    net_id 8 : integer     # 特殊网使用的网id
+    total_diamond 9 : integer  # 玩家总钻石
+    bullet 10 : integer   #玩家子弹数量(比赛场使用)
+    add_gold 11 : integer #打死鱼得到的金币(比赛场 加成 使用)
+    hitting_fishes 12 : *victim # 命中的鱼,可以带有victim里边的全部字段
+    special_fish_left_gold 13 : integer  # 特殊鱼最后剩余的保底分
+}
+table_sync_event 19 {                   # 桌子同步事件
+    request {
+        uid 0 : string
+        fires 1 : *fire_event           # 发炮事件
+        fish_nets 2 : *fish_net_event   # 发网事件
+        interval 3 : integer            # 间隔时间，除以1000
+    }
+}
+
+sync_skill_effect 24 { # 同步技能的效果
+    request {
+        uid 0           : string
+        skill_type 1    : integer # 技能类型，是技能对应要消耗的物品的id 如锁定是30
+        tag_ids 2        : *integer # 召唤技能，target_id是鱼的id
+        is_first  3     : integer # 1表示第一次锁定，在持续时间内多次锁定不同的目标，第一次锁定目标会显示特效
+        add_speed 4     : integer # 提高的速度（单位%）
+        cannon_id  5    : integer # 使用狂暴卡后的炮id
+        time 6          : integer # 技能的持续时间（秒数）
+        frozen_fishes 7 : *fish #被冰冻的鱼
+        cd_time 8 : integer #技能冷却时间
+    }
+}
+
+sync_skill_end 25 { # 通知玩家，玩家uid的技能结束了
+    request {
+        uid 0           : string
+        skill_type 1    : integer # 技能类型，是技能对应要消耗的物品的id 如锁定是30
+    }
+}
+
+notice 28 { # 公告
+    request {
+        content 0 : string # 内容
+    }
+}
+
+switch_cannon 30 { # 切换炮
+    request {
+        uid 0         : string
+        cannon_id  1  : integer # 炮id，对应物品表id
+        battery_skill_energy 2 : integer #炮技能能量
+    }
+}
+
+change_cannon 31 { # 给使用狂暴卡的玩家发送炮id
+    request {
+        cannon_id  0    : integer # 使用狂暴卡后的炮id
+        time       1    : integer #技能持续时间
+    }
+}
+
+.broadcast_tips {
+    fishid 0 : integer          # 鱼id
+    vip 1 : integer             # 玩家vip等级
+    nickname 2 : string         # 玩家昵称
+    gold 3 : integer            # 金币
+    itemid 4 : integer          # 道具id
+    quantity 5 : integer        # 道具数量
+    silo_factor 6 : integer     # 炮倍数
+    gold_factor 7 : integer     # 金币倍数(觉醒倍数)
+    energy 8 : integer          # 能量
+}
+
+game_broadcast_info 35 {        # 跑马灯
+    request {
+        type 0 : integer        # 跑马灯类型:1-服务器推送 2-玩家触发的跑马灯 3-边缘弹出的tips，类型3只在房间中出现
+        id 1 : integer          # 跑马灯id，适用跑马灯类型2
+        info 2 : *string        # 跑马灯内容，适用跑马灯类型2
+        str 3 : string          # 跑马灯内容，适用跑马灯类型1
+        tips 4 : broadcast_tips # 跑马灯内容，适用跑马灯类型3
+        order 5 : integer       # 跑马灯的显示优先级
+        style 6 : integer       # 跑马灯样式，只用于横条跑马灯：0，普通；1，系统通知；TODO：添加更多
+        guide 7 : boolean       # 跑马灯是否显示引导，只用于横条跑马灯；引导每天只会显示一次
+    }
+}
+
+.activity_info {
+	guid 0 : integer			# 活动ID
+	style 1 : integer			# 类型：1，精彩活动 2，游戏公告
+	main_title 3 : string		# 主标题
+	sub_title 4 : string		# 子标题
+	tag 5 : integer				# 标签： 1，热门 2，新 3，限时
+	highlight 6 : integer		# 有无红点高亮
+	order 7 : integer			# 排序数
+	start_time 8 : integer		# 开始时间
+	end_time 9 : integer		# 结束时间
+	create_time 10 : integer	# 创建时间
+	target_url 11 : string		# 目标地址
+	image_src 12 : string		# 宣传地址
+	content 13 : string			# 内容
+    readever 14 : integer       # 1表示已经打开过这个活动的UI了
+}
+
+game_activity_list 36 {
+	request {
+		list 0 : *activity_info	# 活动列表
+	}
+}
+
+sync_vip_info 52 { # VIP等级信息
+    request {
+        vip 0 : integer # VIP等级
+        process 1 : integer # 进度
+        maximum 2 : integer # 升级所需
+        promoted 3 : boolean # 是否升级了
+        rewards 4 : *prop # 升级的道具奖励
+    }
+}
+
+push_skill_info 56 { # 技能信息 给自己的客户端
+    request {
+        skill_type 0 : integer
+        time 1 : integer # 技能的持续时间（秒数）
+        tag_ids 2    : *integer # 召唤卡召唤出来的鱼的id
+        cannon_id  3    : integer # 使用狂暴卡后的炮id
+        add_speed  4   : integer # 使用加速卡后增加的速度
+        frozen_fishes 5 : *fish #被冰冻的鱼
+        cd_time 6 : integer #技能冷却时间
+    }
+}
+
+.equipment { # 装备
+    id 0            : integer # 道具id
+    create_time 1   : integer # 创建时间 
+    expire_time 2   : integer # 过期时间 0表示无期限使用
+    is_use 3        : integer # 1 表示装备中， 0 表示当前没有装备
+}
+
+push_changed_equipment 58 {
+    request {
+        change_type   0 : integer # 1表示增加了装备 2表示删除了装备  
+        equip_list    1 : *equipment # 装备列表
+    }
+}
+
+push_removed_task 70 {
+    request {
+        task_ids 0 : *integer
+    }
+}
+
+.cond {
+    id              0 : integer # 条件id
+    quantity        1 : integer # 数量
+    para            2 : *integer # 参数
+    para_range      3 : integer # 参数
+}
+
+change_table_status 84 {                    # 桌子状态改变
+    request {
+        table_status 0 : integer            # 桌子状态 0-普通状态 1-特殊状态（召唤boss使用）
+        multiple_max 1 : integer            # 此状态下最大炮台倍率限制
+        multiple_locked 2 : integer         # 锁定的炮台倍率
+        lucky_score_switch 3 : integer      # 召唤boss幸运值积分功能开关 1：开 2：关
+    }
+}
+
+room_kick_user 88 {                     # 将玩家踢出房间
+    request {
+        reason 0 : integer              # 踢出原因
+    }
+}
+
+popup_msg 89 { # 弹出消息
+    request {
+        content 0 : string # 消息内容 
+    }
+}
+
+delete_mail 90 { # 删除邮件
+    request {
+        guids 0 : *string # 邮件guid数组
+    }
+}
+
+small_game_start 95 {       # 小游戏开始
+    request {
+        uid 0 : string      # uid
+        id 1 : integer      # 小游戏ID
+    }
+}
+
+small_game_end 96 {         # 小游戏结束
+    request {
+        uid 0 : string      # uid
+        id 1 : integer      # 小游戏ID
+        award 2 : *prop     # 小游戏奖励
+        fish_id 3 : integer # 鱼ID
+        total_gold 4 : string       # 金币
+        total_diamond 5 : string    # 钻石
+        total_energy 6 : string     # 能量
+    }
+}
+
+small_game_return 98 {
+    request {
+        uid 0 : string      # uid
+        id 1 : integer      # 小游戏ID
+        award 2 : *prop     # 小游戏奖励
+    }
+}
+
+push_whole_point_day 103 {
+    request {
+        hour    0 : integer # 0表示一天的零点零分零秒
+    }
+}
+
+
+push_prop_change 107 {
+    request {
+        action 0 : integer # 1增加 2减少 3剩余 4重复炮台获取 5彩金抽奖
+        items  1 : *prop   # 道具列表
+    }
+}
+
+.banner_item {
+    push_type   0 : integer # 1增加或修改 2删除
+    id          1 : integer # 配置记录ID
+    sort        2 : integer # 排序值
+    banner_url  3 : string  # url
+    biz_id      4 : integer # 业务ID（1 商城兑换 2幸运购 3兑换商城活动轮播）
+    name        5 : string  # 名字
+    jump        6 : string  # 跳转
+    desc        7 : string  # name下面的描述文字（海螺引导）
+}
+
+.tab_item {
+    push_type       0 : integer # 1增加或修改 2删除
+    id              1 : integer # 配置记录ID
+    tab_name        2 : string  # 页签名字
+    tab_sort        3 : integer # 页签排序值
+    tab_name_colour 4 : string  # 页签名字颜色
+    biz_id          5 : integer # 业务ID（1 商城兑换 2幸运购）
+    min_consume_num 6 : integer # 消耗量的下限(幸运购，这个页签下的最少消耗1个幸运币，最少消耗10个幸运币)
+}
+
+.corner_mark_item {
+    push_type           0 : integer # 1增加或修改 2删除
+    id                  1 : integer # 配置记录id
+    corner_mark_name    2 : string # 角标名
+    corner_mark_name_colour 3 : string # 角标名颜色
+    biz_id              4 : integer # 业务ID（1 商城兑换 2幸运购 3 幸运购活动轮播）
+}
+
+.simple_exchange_item {
+    push_type           0 : integer # 1增加或修改 2删除
+    id                  1 : integer # 配置记录id
+    consume_id          2 : integer # 消耗物品ID
+    unit_consume_num    3 : integer # 消耗量，单位(话费券最少100，魂石1个)
+    reward_id           4 : integer # 获得物品ID
+    unit_reward_num     5 : integer # 奖励数量，单位(unit_reward_num是2，消耗了500话费券，则获得10个reward_id物品)
+}
+
+.conch_guide {
+    title               0 : string # 标题
+    guide_records       1 : *banner_item # 海螺引导记录
+}
+
+# 物品表的道具的extra_params字段
+.extra_params_prop {
+    use_type                0 : integer # 使用方式 1是实物凭证
+    receive_goods_item_id   1 : integer # 消耗实物凭，得到的实物id
+}
+
+#数据库配合的一个物品
+.db_item {
+    id      0 : integer # 物品ID
+    name    1 : string  # 物品名称
+    type    2 : integer # 物品类型
+    comment 3 : string  # 描述
+    icon    4 : string  # 图标
+    # 字符串，客户端解析成json(格式为{"receive_goods_item_id":100004})
+    # receive_goods_item_id是实物id，根据receive_goods_item_id到物品表查找，如果找不到，到数据库物品表（db_items_cfg）查找
+    # 查找记录的type字段，如果是5，是实物卡（邮件发），如果19是则是需要快递的实物
+    extra_params 5 : extra_params_prop # 物品表的道具的extra_params字段
+}
+
+.conch_common_item {
+    push_type               0 : integer # 1增加或修改 2删除
+    auto_add_jackpot        1 : integer # 池子每秒钟自增的值
+    conch_guid_title        2 : string  # 海螺引导的标题
+}
+
+.task_item {
+    push_type           0 : integer # 1增加或修改 2删除
+    id                  1 : integer # 记录id
+    task_id             2 : integer # 任务id
+    Name                3 : string  # 任务名称
+    Summary             4 : string  # 任务概述
+    Complete_condition  5 : *cond  # 完成条件
+    MissionImage        6 : string  # 任务图片
+    Link                7 : integer  # 跳转链接ID
+    Type                8 : integer  # 任务类型 1：日任务 2：周任务 3：房间任务 4：一次性任务，不会重置
+    IsUnlock            9 : integer  # 任务是否开启 1 开启 0 关闭
+    Rewards             10 : *prop    # 奖励道具
+    Liveness            11  : integer   # 赠送活跃度
+    Sort                12  : integer   # 任务排序
+    next                13  : integer   # 下一个任务
+    is_first            14  : integer   # 是否首任务 1是 0不是
+    guide_id            15  : integer   # 引导id
+    room_id             16  : integer   # 房间id
+    min_ver             17  : string    # 户端最低版本号
+    type_receive_reward 18  : integer   # 领取奖励的方式 1手动领取 2完成自动领取
+}
+
+.task_off_reward_item {
+    id                      0 : integer # 记录id
+    room_id                 1 : integer # 房间id
+    fish_format_id          2 : integer # 鱼阵id
+    type                    3 : integer # 任务类型（客户端用）
+    time                    4 : integer # 持续时间，单位秒
+    task_id_list            5 : *integer # 任务id列表
+    rewards                 6 : *prop   # 奖励
+    end_type                7 : integer # 任务结束方式，1达到要求的数量立刻结束 2时间到了结束
+    show_score              8 : integer # 1展示积分 0不展示积分
+    ready_time_start        9 : integer # 任务触发后的倒计时，单位秒
+}
+
+.task_common_item {
+    id                      0 : integer # 记录id
+    task_id                 1 : integer # 任务id
+    task_name               2 : string  # 任务名称
+    is_close                3 : integer # 1不开放任务 0开放
+    complete_condition      4 : cond    # 完成条件
+    task_picture            5 : string  # 任务图片
+}
+
+.loading_img_item {
+    push_type           0 : integer   # 1增加或修改 2删除
+    id                  1 : integer   # 配置id
+    title               2 : string    # 标题
+    order               3 : integer   # 排序
+    user                4 : integer   # 目标用户(1首次进入 2非首次进入)
+    room                5 : *integer  # 目标渔场(房间id列表,无值或空列表表示全部渔场)
+    res                 6 : *string   # 图片地址列表
+    birth               7 : integer   # 创建时间
+    begin               8 : integer   # 开始显示时间
+    ending              9 : integer   # 结束显示时间
+    channel             10: *string   # 生效渠道(渠道id列表,无值或空列表表示全部渠道)
+}
+
+# 一个表的数据多，要按页发，增加index_page字段，表示下发第index_page页（返还c2s的req_tb_cfg的index字段）
+#为了版本兼容，是当前最后字段位置添加
+push_tb_cfg 114 { # 推送配置
+    request {
+        tb_cfg_id                   0 : integer                     # 1 banner_cfg 2 页签 3 角标 4 简单兑换配置 5.海螺引导配置
+        banner_cfg                  1 : *banner_item                # banner图片
+        tab_cfg                     2 : *tab_item                   # 兑换商城页签
+        corner_mark_cfg             3 : *corner_mark_item           # 角标
+        simple_exchange_cfg         4 : *simple_exchange_item       # 简单兑换配置
+        conch_guide_cfg             5 : *banner_item                # 海螺引导记录
+        index_page                  6 : integer                     # 一个表的数据多，要按页发，第index_page页
+        send_last                   7 : integer                     # 1发送的是最后一页（客户端还要发送req_tb_cfg请求），0不是发送最后一页
+        db_items_cfg                8 : *db_item                    # 数据库的物品表
+        conch_common_cfg            9 : conch_common_item           # 海螺池子控制信息
+        task_cfg                    10 : *task_item                 # 任务配置表
+        task_off_reward_cfg         11 : *task_off_reward_item      # 悬赏任务-房间任务id配置表
+        task_common_cfg             12 : *task_common_item          # 任务配置（悬赏任务）
+        pre_notice_boss_spawn_cfg   13 : *pre_notice_boss_item      # boss预告配置
+        loading_img_cfg             14 : *loading_img_item          # loading图配置
+    }
+}
+
+.pre_notice_boss_item{
+    id              0 : integer # 预告刷鱼id
+    type            1 : integer # 类型
+    title           2 : string # 标题
+    png1            3 : string # 预告icon图地址
+    png2            4 : string # 预告点开图地址
+    go_to            5 : integer # 是否跳转
+    pre_notice_time 6 : integer # 预告提前多少秒
+    beon_countdown  7 : integer # 在场倒计时
+    switch_countdown 8 : integer # 倒计时开关
+    room_limit      9 : *integer # 房间可见
+    vip_limit       10 : *integer # vip可见
+    multi_limit     11 : integer # 炮倍可见
+    coin_limit      12 : integer # 金币可见
+    energy_limit    13 : integer # 能量可见
+    lottery_limit   14 : integer # 话费劵可见
+}
+
+game_notice_info 164 {          # 弹窗公告
+    request {
+        id 0 : integer          # 弹窗公告id
+        style 1 : integer       # 窗口样式
+        type 2 : integer        # 弹出类型
+        text 3 : string         # 弹窗公告内容
+        order 4 : integer       # 弹窗公告排序
+        channel 5 : string      # 开放渠道
+        title 6 : string        # 弹窗标题
+    }
+}
