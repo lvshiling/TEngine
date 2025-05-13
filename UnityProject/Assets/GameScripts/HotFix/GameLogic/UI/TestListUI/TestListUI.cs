@@ -8,7 +8,7 @@ namespace GameLogic
     [Window(UILayer.UI)]
     class TestListUI : UIWindow
     {
-        #region ½Å±¾¹¤¾ßÉú³ÉµÄ´úÂë
+        #region è„šæœ¬å·¥å…·ç”Ÿæˆçš„ä»£ç  
         private LoopListHelper _listTest;
         protected override void ScriptGenerator()
         {
@@ -16,7 +16,7 @@ namespace GameLogic
         }
         #endregion
 
-        #region ÊÂ¼ş
+        #region äº‹ä»¶ 
         #endregion
 
 
@@ -36,16 +36,16 @@ namespace GameLogic
         {
             base.OnRefresh();
 
-            //²âÊÔÓÃÊı¾İ
+            //æµ‹è¯•ç”¨æ•°æ®
             dataList = new List<TestListData>();
             for (int i = 0; i < 50; i++)
             {
                 dataList.Add(new TestListData("Name" + i, i));
             }
 
-            //ÉèÖÃË¢ĞÂcellµÄÎ¯ÍĞ
+            //è®¾ç½®åˆ·æ–°cellçš„å§”æ‰˜
             _listTest.itemRenderer = ListCellRenderer;
-            //ÉèÖÃÁĞ±íÄÚÔªËØÊıÁ¿
+            //è®¾ç½®åˆ—è¡¨å†…å…ƒç´ æ•°é‡
             _listTest.totalCount = dataList.Count;
         }
         private void ListCellRenderer(Transform trans, int index)
