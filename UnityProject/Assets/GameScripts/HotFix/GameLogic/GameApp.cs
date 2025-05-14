@@ -1,7 +1,10 @@
 using System.Collections.Generic;
 using System.Reflection;
 using GameLogic;
+using Sproto;
+using SprotoType;
 using TEngine;
+using Unity.Android.Gradle.Manifest;
 #pragma warning disable CS0436
 
 
@@ -11,7 +14,7 @@ using TEngine;
 public partial class GameApp
 {
     private static List<Assembly> _hotfixAssembly;
-
+    private static AClient clientA;
     /// <summary>
     /// 热更域App主入口。
     /// </summary>
@@ -23,18 +26,115 @@ public partial class GameApp
         Log.Warning("======= 看到此条日志代表你成功运行了热更新代码 =======");
         Log.Warning("======= Entrance GameApp =======");
         Utility.Unity.AddDestroyListener(Release);
+
+#if true
+        clientA = GameModule.Network.CreateNetworkClient(NetworkType.TCP, 4096, new TapGoNetPackageEncoder(), new TapGoNetPackageDecoder());
+        clientA.Connect("43.199.74.135", 8888, (e)=> {
+            Log.Debug($"连接服务器结果：{e}");
+            if (e == System.Net.Sockets.SocketError.Success)
+            {
+                SprotoType.login.request loginRequest = new SprotoType.login.request();
+                loginRequest.appver = "1.1.18";
+                loginRequest.account_type = "fastlogin";
+                loginRequest.openid = "robot_1203123";
+                loginRequest.token = "";
+                var extra = new DefaultJsonHelper().ToJson(new
+                {
+                    ts = "1544616066645",
+                    playerLevel = "1",
+                    playerSSign = "",
+                    nickname = "blabla",
+                    reconnect = false,
+                    reconnect_token = "9KAGNoHE",
+                });
+                loginRequest.extra = extra;
+                loginRequest.device_info = new DefaultJsonHelper().ToJson(new
+                {
+                    os_type = 3, //android
+                    phone_number = "1501899000",
+                    ChannelId = "GF0SN10000",
+                    androidid = "androidid0000123",
+                    idfa = "idfa12222222223",
+                });
+
+                //SprotoRpc client = new SprotoRpc();
+                SprotoRpc.RpcRequest clientRequest = service.Attach(Protocol.Instance);
+                byte[] req = clientRequest.Invoke<Protocol.login>(loginRequest, 1);
+                //service.Dispatch(req);
+                TapGoNetPackage package = new TapGoNetPackage();
+                package.BodyBytes = req;
+                clientA.SendPackage(package);
+            }
+        }); 
+#endif
+
         StartGameLogic();
     }
-    
+
+#if false
+function CMD.login(openid)
+    local param = {
+        appver = "1.1.18",
+        account_type = "fastlogin",
+		openid = openid or "robot_1203123",
+        token = "",
+        extra = json.encode({
+            ts = "1544616066645",
+            playerLevel = "1",
+            playerSSign = "",
+            nickname = 'blabla',
+            --unionid = 'unionid3',
+            reconnect = false,
+            reconnect_token='9KAGNoHE',
+        }),
+        device_info = json.encode({
+            os_type = 3, --android
+            phone_number = "1501899000",
+            ChannelId = "GF0SN10000",
+            androidid = "androidid0000123",
+            idfa = "idfa12222222223",
+        })
+    }
+
+    send_request("login", param)
+end
+#endif
+
     private static void StartGameLogic()
     {
         GameEvent.Get<ILoginUI>().ShowLoginUI();
         GameModule.UI.ShowUIAsync<BattleMainUI>();
+        GameModule.UpdateDriver.AddUpdateListener(Update);
     }
     
     private static void Release()
     {
         SingletonSystem.Release();
         Log.Warning("======= Release GameApp =======");
+    }
+
+    private static SprotoRpc service = new SprotoRpc(Protocol.Instance);
+    private static SprotoPack recvPack = new SprotoPack();
+
+    private static void Update()
+    {
+        TapGoNetPackage package = clientA.PickPackage() as TapGoNetPackage;
+        if (package != null) {
+            var rpcInfo = service.Dispatch(package.BodyBytes);
+            Log.Debug($"GameApp pick a package {package} {rpcInfo.tag} {rpcInfo.type} {rpcInfo.responseObj}");
+            if (rpcInfo.type == SprotoRpc.RpcType.RESPONSE)
+            {
+                SprotoType.login.response loginResponse = rpcInfo.responseObj as SprotoType.login.response;
+
+            }
+#if false
+            byte[] data = recvPack.unpack(package.BodyBytes);
+            SprotoType.Package pkg = new SprotoType.Package();
+            int offset = pkg.init(data);
+
+            int tag = (int)pkg.type;
+            long session = (long)pkg.session;
+#endif
+        }
     }
 }

@@ -467,22 +467,18 @@ req_jump_room_id 309 { # 请求可进入的房间ID
     }
 }
 
-heartbeat 1 {
+#server
+heartbeats2c 1 {
 }
 
-.prop { # 道具
+.props2c { # 道具
     id 0 : integer
     quantity 1 : integer
 	add_time 2 : integer
 }
 
-.battery_skill {
-    id 0 : integer         # 炮台id
-    time 1 : integer       # 剩余时间 
-    factor 2 : integer     # 初始倍率
-}
 
-table_player_sit_down 3 {
+table_player_sit_down 3000 {
 	request {
 		uid 0 : string
 		chair_id 1 : integer
@@ -497,7 +493,7 @@ table_player_sit_down 3 {
         using_cannon_multiple 10 : integer # 当前使用的炮倍
         is_bankruptcy 11 : boolean # 是否破产
         vip_level 12 : integer # 玩家的VIP等级
-        items 13 : *prop  # 玩家道具数量，用于魂石房间魂石数量显示
+        items 13 : *props2c  # 玩家道具数量，用于魂石房间魂石数量显示
         account_id 14: integer # 玩家账号ID
         score 15: integer #玩家分数(比赛场)
         icon_box_id 16 : integer #头像框id
@@ -513,16 +509,6 @@ table_player_stand_up 4 {
 	}
 }
 
-.reach_cond {
-    id 0 : integer
-    num 1 : integer
-}
-
-.task_info {
-    id 0 : integer
-    status 1 : integer
-	cond_list 2 : *reach_cond
-}
 
 push_changed_task 5 {
     request {
@@ -549,11 +535,11 @@ push_changed_task 5 {
     charm_t 12 : integer        # 魅惑到期时间
 }
 
-.victim {
+.victims2c {
     id 0 : integer
     tag_id 1 : integer
     score 2 : integer
-    items 3 : *prop                 # 掉落道具
+    items 3 : *props2c                 # 掉落道具
     func_id 4 : integer             # 特殊鱼死亡后触发的特殊网的功能id，需要判空
     net_id 5 : integer              # 特殊鱼死亡后触发的特殊网的网id，需要判空
     factor_list 6 : *integer        # 特殊的大鱼死亡之后触发的翻倍显示序列
@@ -572,7 +558,7 @@ table_fire 7 { # 发炮
 table_fish_net 8 { # 网
 	request {
         uid 1 : string         # uid
-        fishes 2 : *victim     # 死掉的鱼
+        fishes 2 : *victims2c     # 死掉的鱼
         factor 3 : integer     # 翻倍
         silo_award 4 : integer # 炮的增益(要除以10，保留一位小数)
         total_gold 5 : string  # 玩家总金币
@@ -599,7 +585,7 @@ login_queue_wait 11 { # 登陆排队等待
 user_level_up 13 { # 用户升级
     request {
         level 0 : integer # 等级
-        rewards 1 : *prop # 升级奖励
+        rewards 1 : *props2c # 升级奖励
         total_diamond 2 : integer
         total_gold 3 : string
     }
@@ -611,7 +597,7 @@ user_level_up 13 { # 用户升级
     type 2 : integer # 邮件类型(const.mail_type)
     title 3 : string # 标题
     content 4 : string # 内容
-    reward 5 : *prop # 邮件里的奖励
+    reward 5 : *props2c # 邮件里的奖励
     create_time 6 : integer # 创建时间 
     state 7 : integer # 邮件状态（const.mail_state)
     expire_time 8 : integer # 邮件过期时间
@@ -637,7 +623,7 @@ mail_list 18 {
 }
 .fish_net_event {
     uid 1 : string         # uid
-    fishes 2 : *victim     # 死掉的鱼
+    fishes 2 : *victims2c     # 死掉的鱼
     factor 3 : integer     # 翻倍
     silo_award 4 : integer # 炮的增益(要除以10，保留一位小数)
     total_gold 5 : string  # 玩家总金币
@@ -647,7 +633,7 @@ mail_list 18 {
     total_diamond 9 : integer  # 玩家总钻石
     bullet 10 : integer   #玩家子弹数量(比赛场使用)
     add_gold 11 : integer #打死鱼得到的金币(比赛场 加成 使用)
-    hitting_fishes 12 : *victim # 命中的鱼,可以带有victim里边的全部字段
+    hitting_fishes 12 : *victims2c # 命中的鱼,可以带有victim里边的全部字段
     special_fish_left_gold 13 : integer  # 特殊鱼最后剩余的保底分
 }
 table_sync_event 19 {                   # 桌子同步事件
@@ -755,7 +741,7 @@ sync_vip_info 52 { # VIP等级信息
         process 1 : integer # 进度
         maximum 2 : integer # 升级所需
         promoted 3 : boolean # 是否升级了
-        rewards 4 : *prop # 升级的道具奖励
+        rewards 4 : *props2c # 升级的道具奖励
     }
 }
 
@@ -819,7 +805,7 @@ popup_msg 89 { # 弹出消息
     }
 }
 
-delete_mail 90 { # 删除邮件
+delete_mails2c 90 { # 删除邮件
     request {
         guids 0 : *string # 邮件guid数组
     }
@@ -836,7 +822,7 @@ small_game_end 96 {         # 小游戏结束
     request {
         uid 0 : string      # uid
         id 1 : integer      # 小游戏ID
-        award 2 : *prop     # 小游戏奖励
+        award 2 : *props2c     # 小游戏奖励
         fish_id 3 : integer # 鱼ID
         total_gold 4 : string       # 金币
         total_diamond 5 : string    # 钻石
@@ -848,21 +834,21 @@ small_game_return 98 {
     request {
         uid 0 : string      # uid
         id 1 : integer      # 小游戏ID
-        award 2 : *prop     # 小游戏奖励
+        award 2 : *props2c     # 小游戏奖励
     }
 }
 
-push_whole_point_day 103 {
+push_whole_point_day 1030 {
     request {
         hour    0 : integer # 0表示一天的零点零分零秒
     }
 }
 
 
-push_prop_change 107 {
+push_prop_change 1070 {
     request {
         action 0 : integer # 1增加 2减少 3剩余 4重复炮台获取 5彩金抽奖
-        items  1 : *prop   # 道具列表
+        items  1 : *props2c   # 道具列表
     }
 }
 
@@ -945,7 +931,7 @@ push_prop_change 107 {
     Link                7 : integer  # 跳转链接ID
     Type                8 : integer  # 任务类型 1：日任务 2：周任务 3：房间任务 4：一次性任务，不会重置
     IsUnlock            9 : integer  # 任务是否开启 1 开启 0 关闭
-    Rewards             10 : *prop    # 奖励道具
+    Rewards             10 : *props2c    # 奖励道具
     Liveness            11  : integer   # 赠送活跃度
     Sort                12  : integer   # 任务排序
     next                13  : integer   # 下一个任务
@@ -963,7 +949,7 @@ push_prop_change 107 {
     type                    3 : integer # 任务类型（客户端用）
     time                    4 : integer # 持续时间，单位秒
     task_id_list            5 : *integer # 任务id列表
-    rewards                 6 : *prop   # 奖励
+    rewards                 6 : *props2c   # 奖励
     end_type                7 : integer # 任务结束方式，1达到要求的数量立刻结束 2时间到了结束
     show_score              8 : integer # 1展示积分 0不展示积分
     ready_time_start        9 : integer # 任务触发后的倒计时，单位秒

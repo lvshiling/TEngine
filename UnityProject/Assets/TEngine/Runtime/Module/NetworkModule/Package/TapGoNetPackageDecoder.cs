@@ -47,7 +47,7 @@ namespace TEngine
                 // 读取包头数据。
                 //int msgID = ringBuffer.ReadInt();
                 //int msgBodyLength = ringBuffer.ReadInt();
-                int msgBodyLength = ringBuffer.ReadUShort();
+                ushort msgBodyLength = ringBuffer.ReadUShort();
                 byte[] bodyLengthBytes = BitConverter.GetBytes(msgBodyLength);
 
                 // 如果系统是小端序，则需要反转字节顺序。

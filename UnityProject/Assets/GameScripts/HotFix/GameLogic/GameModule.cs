@@ -87,6 +87,9 @@ public class GameModule
 
     public static INetworkModule Network => _network ??= Get<INetworkModule>();
     private static INetworkModule _network;
+
+    public static IUpdateDriver UpdateDriver => _updateDriver ??= Get<IUpdateDriver>();
+    private static IUpdateDriver _updateDriver;
     #endregion
 
     /// <summary>
