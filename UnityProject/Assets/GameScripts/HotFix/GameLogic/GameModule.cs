@@ -84,8 +84,11 @@ public class GameModule
     public static ILocalizationModule Localization => _localization ??= Get<ILocalizationModule>();
     
     private static ILocalizationModule _localization;
+
+    public static INetworkModule Network => _network ??= Get<INetworkModule>();
+    private static INetworkModule _network;
     #endregion
-    
+
     /// <summary>
     /// 获取游戏框架模块类。
     /// </summary>
