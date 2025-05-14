@@ -11,10 +11,10 @@
     public class TapGoNetPackage : INetPackage
     {
         /// <summary>
-        /// 消息Length, big endien
+        /// 消息Length, big endien 2字节长度。
         /// <para>整型消息Length，用于：</para>
         /// </summary>
-        public ushort MsgLen { set; get; }
+        public int MsgLen { set; get; }
 
         /// <summary>
         /// 消息体原始字节数据。

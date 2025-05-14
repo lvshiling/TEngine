@@ -8,7 +8,7 @@ namespace TEngine
     public class TapGoNetPackageEncoder : INetPackageEncoder
     {
         private HandleErrorDelegate _handleErrorCallback;
-        private const int HeaderMsgLengthFiledSize = 4; //包头里的包体长度（int类型）。
+        private const int HeaderMsgLengthFiledSize = 2; //包头里的包体长度（short类型）。
 
         /// <summary>
         /// 获取包头的尺寸。
