@@ -27,18 +27,18 @@ public partial class GameApp
         Log.Warning("======= Entrance GameApp =======");
         Utility.Unity.AddDestroyListener(Release);
 
-#if true
+#if false
         clientA = GameModule.Network.CreateNetworkClient(NetworkType.TCP, 4096, new TapGoNetPackageEncoder(), new TapGoNetPackageDecoder());
         clientA.Connect("43.199.74.135", 8888, (e)=> {
             Log.Debug($"连接服务器结果：{e}");
             if (e == System.Net.Sockets.SocketError.Success)
             {
-                SprotoType.login.request loginRequest = new SprotoType.login.request();
+                ClientSprotoType.login.request loginRequest = new ClientSprotoType.login.request();
                 loginRequest.appver = "1.1.18";
                 loginRequest.account_type = "fastlogin";
                 loginRequest.openid = "robot_1203123";
                 loginRequest.token = "";
-                var extra = new DefaultJsonHelper().ToJson(new
+                var extra = Utility.Json.ToJson(new
                 {
                     ts = "1544616066645",
                     playerLevel = "1",
@@ -48,7 +48,7 @@ public partial class GameApp
                     reconnect_token = "9KAGNoHE",
                 });
                 loginRequest.extra = extra;
-                loginRequest.device_info = new DefaultJsonHelper().ToJson(new
+                loginRequest.device_info = Utility.Json.ToJson(new
                 {
                     os_type = 3, //android
                     phone_number = "1501899000",
@@ -58,8 +58,8 @@ public partial class GameApp
                 });
 
                 //SprotoRpc client = new SprotoRpc();
-                SprotoRpc.RpcRequest clientRequest = service.Attach(Protocol.Instance);
-                byte[] req = clientRequest.Invoke<Protocol.login>(loginRequest, 1);
+                SprotoRpc.RpcRequest clientRequest = service.Attach(ClientProtocol.Instance);
+                byte[] req = clientRequest.Invoke<ClientProtocol.login>(loginRequest, 1);
                 //service.Dispatch(req);
                 TapGoNetPackage package = new TapGoNetPackage();
                 package.BodyBytes = req;
@@ -68,6 +68,42 @@ public partial class GameApp
         }); 
 #endif
 
+        MsgModule.Instance.Connect("43.199.74.135", 8888, (e) => {
+            Log.Debug($"连接服务器结果：{e}");
+            if (e == System.Net.Sockets.SocketError.Success)
+            {
+                ClientSprotoType.login.request loginRequest = new ClientSprotoType.login.request();
+                loginRequest.appver = "1.1.18";
+                loginRequest.account_type = "fastlogin";
+                loginRequest.openid = "robot_1203123";
+                loginRequest.token = "";
+                var extra = Utility.Json.ToJson(new
+                {
+                    ts = "1544616066645",
+                    playerLevel = "1",
+                    playerSSign = "",
+                    nickname = "blabla",
+                    reconnect = false,
+                    reconnect_token = "9KAGNoHE",
+                });
+                loginRequest.extra = extra;
+                loginRequest.device_info = Utility.Json.ToJson(new
+                {
+                    os_type = 3, //android
+                    phone_number = "1501899000",
+                    ChannelId = "GF0SN10000",
+                    androidid = "androidid0000123",
+                    idfa = "idfa12222222223",
+                });
+                
+                MsgModule.Instance.Send<ClientProtocol.login>(loginRequest, (response) =>
+                {
+                    ClientSprotoType.login.response loginResponse = response as ClientSprotoType.login.response;
+                    Log.Debug($"Login Result {loginResponse.error_code} {loginResponse.error_msg} {loginResponse.account}");
+                });
+
+            }
+        });
         StartGameLogic();
     }
 
@@ -113,20 +149,24 @@ end
         Log.Warning("======= Release GameApp =======");
     }
 
-    private static SprotoRpc service = new SprotoRpc(Protocol.Instance);
+    private static SprotoRpc service = new SprotoRpc(ClientProtocol.Instance);
     private static SprotoPack recvPack = new SprotoPack();
 
     private static void Update()
     {
+#if false
         TapGoNetPackage package = clientA.PickPackage() as TapGoNetPackage;
-        if (package != null) {
-            var rpcInfo = service.Dispatch(package.BodyBytes);
-            Log.Debug($"GameApp pick a package {package} {rpcInfo.tag} {rpcInfo.type} {rpcInfo.responseObj}");
-            if (rpcInfo.type == SprotoRpc.RpcType.RESPONSE)
+        if (package != null)
+        {
+            try
             {
-                SprotoType.login.response loginResponse = rpcInfo.responseObj as SprotoType.login.response;
-
-            }
+                var rpcInfo = service.Dispatch(package.BodyBytes);
+                Log.Debug($"GameApp pick a package {package} {rpcInfo.tag} {rpcInfo.type} {rpcInfo.responseObj}");
+                if (rpcInfo.type == SprotoRpc.RpcType.RESPONSE)
+                {
+                    ClientSprotoType.login.response loginResponse = rpcInfo.responseObj as ClientSprotoType.login.response;
+                    Log.Debug($"Login Result {loginResponse.error_code} {loginResponse.user_info}");
+                }
 #if false
             byte[] data = recvPack.unpack(package.BodyBytes);
             SprotoType.Package pkg = new SprotoType.Package();
@@ -135,6 +175,15 @@ end
             int tag = (int)pkg.type;
             long session = (long)pkg.session;
 #endif
+            }
+            catch (System.Exception e)
+            {
+                Log.Error($"GameApp Dispatch error {e.Message}");
+            }
+            finally
+            {
+            }
         }
+#endif
     }
 }

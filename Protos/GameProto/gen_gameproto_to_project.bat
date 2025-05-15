@@ -19,7 +19,8 @@ set CODE_OUTPATH=%WORKSPACE%\UnityProject\Assets\GameScripts\HotFix\GameProto\Me
 echo "CODE_OUTPATH"
 
 %LUA_BIN% %SPROTODUMP_DLL% -cs %PROTOS_PATH%\Member.sproto -o %CODE_OUTPATH%\Member.cs
-%LUA_BIN% %SPROTODUMP_DLL% -cs %PROTOS_PATH%\c2s-slim.sproto -o %CODE_OUTPATH%\cs2-slim.cs
+%LUA_BIN% %SPROTODUMP_DLL% -cs %PROTOS_PATH%\c2s-slim.sproto -p client -o %CODE_OUTPATH%\ClientRpcMessage.cs
+%LUA_BIN% %SPROTODUMP_DLL% -cs %PROTOS_PATH%\s2c-slim.sproto -p server -o %CODE_OUTPATH%\ServerRpcMessage.cs
 rem %LUA_BIN% %SPROTODUMP_DLL% -cs %PROTOS_PATH%\s2c-slim.sproto -o %CODE_OUTPATH%\s2c-slim.cs
 
 cd %NOW_PATH%
